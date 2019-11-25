@@ -1,0 +1,75 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block navbar %}
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <ul class="navbar-nav mr-auto">
+      {% if current_user.is_authenticated %}
+      <li class="nav-item {% if active == 'task' %} active {% endif %}">
+        <a class="nav-link" href="{{ url_for('.tasks') }}">Tareas</a>
+      </li>
+      <li class="nav-item {% if active == 'new_task' %} active {% endif %}">
+        <a class="nav-link" href="{{ url_for('.new_task') }}">NuevaTarea</a>
+      </li>
+      {% endif %}
+      <!--
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+    -->
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+      {% if current_user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('.logout') }}">logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item {% if active == 'login' %} active {% endif %}">
+        <a class="nav-link" href="{{ url_for('.login') }}">login</a>
+      </li>
+      <li class="nav-item {% if active == 'register' %} active {% endif %}">
+        <a class="nav-link" href="{{ url_for('.register') }}">registro</a>
+      </li>
+      {% endif %}
+    </ul>
+    <!--<span class="navbar-text">{{ title }}</span>-->
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+
+      <div class="col-md-12 col-md-offset-1">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+          
+          {% if messages %}
+            {% for categorie,message in messages %}
+              {% if categorie=="error" %}
+                <div class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
+                {% else %}
+                  <div class="alert alert-success" role="alert">
+                    {{ message }}
+                  </div>
+              {% endif %}
+            {% endfor %}  
+            
+          {% endif %}
+
+        {% endwith %}
+      </div>
+
+				{% block contenido %}
+
+				{% endblock %}
+		</div>
+	</div>
+{% endblock %}
